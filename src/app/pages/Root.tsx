@@ -33,6 +33,12 @@ export function Root() {
     };
   }, [isShortcutMenuOpen]);
 
+  useEffect(() => {
+    const handleOpenSettings = () => setIsSettingsOpen(true);
+    window.addEventListener("open-ui-settings", handleOpenSettings);
+    return () => window.removeEventListener("open-ui-settings", handleOpenSettings);
+  }, []);
+
   return (
     <div className="flex h-screen overflow-hidden font-sans text-foreground bg-transparent">
       {/* Mobile Sidebar Overlay — CSS transition thay vì framer-motion */}

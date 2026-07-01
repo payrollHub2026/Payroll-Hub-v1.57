@@ -772,14 +772,15 @@ export function TimesheetHub() {
             {/* Header Overview - Stat Banner in Editorial Softness Style */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-3.5 border-b border-[rgba(61,57,53,0.08)] shrink-0 select-none">
               <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                <div className="flex flex-col">
-                  <span 
-                    className="font-mono text-[8.5px] tracking-[0.2em] uppercase text-[#3D3935]/50 leading-none"
-                    style={{ fontWeight: 'bold', fontSize: '9.5px', lineHeight: '9.5px' }}
-                  >
-                    DATASET SELECTOR
-                  </span>
-                  <div className="flex items-center gap-3 mt-1">
+                <div className="flex items-center gap-4">
+                  <div className="flex flex-col">
+                    <span 
+                      className="font-mono text-[8.5px] tracking-[0.2em] uppercase text-[#3D3935]/50 leading-none"
+                      style={{ fontWeight: 'bold', fontSize: '9.5px', lineHeight: '9.5px' }}
+                    >
+                      DATASET SELECTOR
+                    </span>
+                    <div className="flex items-center gap-3 mt-1">
                       <button
                         onClick={() => setShowSidebar(!showSidebar)}
                         className={`p-2 rounded-xl transition-all flex items-center justify-center cursor-pointer ${
@@ -793,7 +794,7 @@ export function TimesheetHub() {
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <button className="group flex items-center gap-2.5 cursor-pointer focus:outline-none">
-                          <h2 className="text-3xl font-serif italic text-[#3D3935] font-semibold tracking-tight select-text group-hover:text-[#E5A8A0] transition-colors leading-tight">
+                          <h2 className="text-3xl font-playpen font-normal text-[#630203] tracking-tight select-text group-hover:text-[#E5A8A0] transition-colors leading-tight">
                             {tabs.find((t) => t.id === activeTab)?.label || "General Roster"}
                           </h2>
                           <ChevronDown className="w-5 h-5 text-[#3D3935]/30 group-hover:text-[#E5A8A0] transition-all" />
@@ -833,6 +834,63 @@ export function TimesheetHub() {
                     </DropdownMenu>
                   </div>
                 </div>
+              </div>
+            </div>
+
+              {/* Action Buttons & Settings on the right */}
+              <div className="flex items-center gap-3">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button className="p-2 px-3 rounded-xl border border-[rgba(61,57,53,0.08)] bg-white hover:bg-slate-50 text-[#3D3935]/70 transition-all flex items-center gap-2 text-xs font-bold shadow-sm select-none cursor-pointer">
+                      <Plus className="w-4 h-4 text-[#E5A8A0]" />
+                      <span>Thao tác khác</span>
+                      <ChevronDown className="w-3 h-3 opacity-60 text-[#3D3935]" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56 bg-white border border-slate-200 shadow-xl rounded-xl p-1 z-[100]">
+                    <DropdownMenuItem
+                      onSelect={handleSyncToSupabase}
+                      disabled={isSyncing}
+                      className="flex items-center gap-2 px-3 py-2.5 rounded-lg cursor-pointer text-xs font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-40"
+                    >
+                      <Check className="w-4 h-4 text-emerald-500" />
+                      <span>{isSyncing ? "Đang đồng bộ..." : "Đồng bộ Supabase"}</span>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                      onSelect={handleSaveData}
+                      className="flex items-center gap-2 px-3 py-2.5 rounded-lg cursor-pointer text-xs font-bold text-slate-700 hover:bg-slate-50"
+                    >
+                      <Save className="w-4 h-4 text-sky-500" />
+                      <span>Lưu dữ liệu thay đổi</span>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                      onSelect={handleRestoreOriginal}
+                      className="flex items-center gap-2 px-3 py-2.5 rounded-lg cursor-pointer text-xs font-bold text-rose-600 hover:bg-rose-50"
+                    >
+                      <RefreshCw className="w-4 h-4 text-rose-500" />
+                      <span>Khôi phục ban đầu</span>
+                    </DropdownMenuItem>
+
+                    <DropdownMenuItem
+                      onSelect={handleExportExcel}
+                      disabled={currentData.length === 0}
+                      className="flex items-center gap-2 px-3 py-2.5 rounded-lg cursor-pointer text-xs font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-40"
+                    >
+                      <Download className="w-4 h-4 text-slate-500" />
+                      <span>Xuất Excel</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                <button
+                  onClick={() => window.dispatchEvent(new CustomEvent("open-ui-settings"))}
+                  className="p-2 rounded-xl border border-[rgba(61,57,53,0.08)] bg-white hover:bg-slate-50 text-slate-400 hover:text-[#E5A8A0] transition-all shadow-sm flex items-center justify-center cursor-pointer"
+                  title="Cài đặt Giao diện"
+                >
+                  <Settings className="w-4 h-4" />
+                </button>
               </div>
             </div>
 
