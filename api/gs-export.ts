@@ -3,6 +3,25 @@ import path from "path";
 import fs from "fs";
 import { google } from "googleapis";
 
+function cleanPrivateKey(key?: string): string | undefined {
+  if (!key) return undefined;
+  let cleaned = key.trim();
+  if ((cleaned.startsWith('"') && cleaned.endsWith('"')) || (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
+    cleaned = cleaned.slice(1, -1).trim();
+  }
+  let formatted = cleaned.replace(/\\n/g, '\n');
+  if (!formatted.includes('\n')) {
+    const pemMatch = formatted.match(/(-----BEGIN [A-Z ]+-----)(.*?)(-----END [A-Z ]+-----)/);
+    if (pemMatch) {
+      const header = pemMatch[1];
+      const body = pemMatch[2].trim().replace(/\s+/g, '\n');
+      const footer = pemMatch[3];
+      formatted = `${header}\n${body}\n${footer}`;
+    }
+  }
+  return formatted;
+}
+
 async function fetchWithRetry(url: string, retries = 3, delay = 1000): Promise<any> {
   const response = await fetch(url);
   
@@ -111,7 +130,7 @@ export default async function handler(req: any, res: any) {
         auth = new google.auth.GoogleAuth({
           credentials: {
             client_email: process.env.GOOGLE_CLIENT_EMAIL,
-            private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+            private_key: cleanPrivateKey(process.env.GOOGLE_PRIVATE_KEY),
           },
           scopes: ['https://www.googleapis.com/auth/drive.readonly', 'https://www.googleapis.com/auth/spreadsheets.readonly'],
         });
