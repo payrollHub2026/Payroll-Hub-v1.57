@@ -951,7 +951,18 @@ export default function TimesheetSummaryPage({
                   <span className="not-italic font-script text-accent text-4xl lowercase inline-block transform -translate-y-0.5" style={{ lineHeight: "33px" }}>
                     Summary
                   </span>
-                  <span className="text-3xl font-normal font-serif text-[#3D3935] tracking-tight ml-1" style={{ lineHeight: "33px" }}>
+                  <span 
+                    className="text-3xl tracking-tight" 
+                    style={{ 
+                      lineHeight: "33px",
+                      fontFamily: "Corinthia, cursive",
+                      fontWeight: "bold",
+                      color: "#5d4021",
+                      marginLeft: "4px",
+                      paddingTop: "0px",
+                      marginTop: "0px"
+                    }}
+                  >
                     & Source
                   </span>
                 </h2>
